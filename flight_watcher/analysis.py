@@ -49,12 +49,34 @@ def price_trend(history):
     else:
         return "unchanged"
 
-def summarize_history(history):
+def median_price(history):
+    if not history:
+        return None
+
+    prices = sorted(row[0] for row in history)
+    middle = len(prices) // 2
+
+    if len(prices) % 2 == 0:
+        return (prices[middle - 1] + prices[middle]) / 2
+
+    return prices[middle]
+
+from datetime import datetime
+
+def days_until_departure(departure_date):
+    departure = datetime.strptime(departure_date, "%Y-%m-%d")
+    today = datetime.now()
+
+    return (departure - today).days
+
+def summarize_history(history, departure_date):
     return {
         "average": average_price(history),
         "lowest": lowest_price(history),
+        "median": median_price(history),
         "highest": highest_price(history),
         "change": price_change(history),
         "change_percent": price_change_percent(history),
         "trend": price_trend(history),
+        "days_until_departure": days_until_departure(departure_date),
     }
