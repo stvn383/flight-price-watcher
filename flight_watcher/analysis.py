@@ -48,3 +48,13 @@ def price_trend(history):
         return "increasing"
     else:
         return "unchanged"
+
+def summarize_history(history):
+    return {
+        "average": average_price(history),
+        "lowest": lowest_price(history),
+        "highest": highest_price(history),
+        "change": price_change(history),
+        "change_percent": price_change_percent(history),
+        "trend": price_trend(history),
+    }

@@ -1,19 +1,15 @@
 from flight_watcher.database import get_price_history
-from flight_watcher.analysis import average_price
-from flight_watcher.analysis import highest_price
-from flight_watcher.analysis import price_change
-from flight_watcher.analysis import price_change_percent
-from flight_watcher.analysis import price_trend
+from flight_watcher.analysis import summarize_history
 
 history = get_price_history()
 
-change = price_change(history)
-average = average_price(history)
-highest = highest_price(history)
-percent = price_change_percent(history)
-trend = price_trend(history)
+summary = summarize_history(history)
 
-print(f"Highest price: ${highest:.2f}")
-print(f"Average price: ${average:.2f}")
-print(f"Price change: {change}, Percent: {percent}")
-print(f"Price trend: {trend}")
+print("Flight Price Summary")
+print("--------------------")
+print(f"Average: ${summary['average']:.2f}")
+print(f"Lowest: ${summary['lowest']:.2f}")
+print(f"Highest: ${summary['highest']:.2f}")
+print(f"Change: ${summary['change']:.2f}")
+print(f"Change %: {summary['change_percent']:.2f}%")
+print(f"Trend: {summary['trend']}")
