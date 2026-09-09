@@ -1,10 +1,13 @@
+from datetime import datetime
+
+
 def average_price(history):
     if not history:
         return None
 
     prices = [row[0] for row in history]
-
     return sum(prices) / len(prices)
+
 
 def lowest_price(history):
     if not history:
@@ -12,42 +15,13 @@ def lowest_price(history):
 
     return min(row[0] for row in history)
 
+
 def highest_price(history):
     if not history:
         return None
 
     return max(row[0] for row in history)
 
-def price_change(history):
-    if len(history) < 2:
-        return None
-
-    first_price = history[0][0]
-    latest_price = history[-1][0]
-
-    return latest_price - first_price
-
-def price_change_percent(history):
-    if len(history) < 2:
-        return None
-
-    first_price = history[0][0]
-    latest_price = history[-1][0]
-
-    return ((latest_price - first_price) / first_price) * 100
-
-def price_trend(history):
-    if len(history) < 2:
-        return "not enough data"
-
-    change = price_change(history)
-
-    if change < 0:
-        return "decreasing"
-    elif change > 0:
-        return "increasing"
-    else:
-        return "unchanged"
 
 def median_price(history):
     if not history:
@@ -61,7 +35,53 @@ def median_price(history):
 
     return prices[middle]
 
-from datetime import datetime
+
+def price_change(history):
+    if len(history) < 2:
+        return None
+
+    return history[-1][0] - history[0][0]
+
+
+def price_change_percent(history):
+    if len(history) < 2:
+        return None
+
+    first_price = history[0][0]
+    latest_price = history[-1][0]
+
+    return ((latest_price - first_price) / first_price) * 100
+
+
+def price_trend(history):
+    if len(history) < 2:
+        return "not enough data"
+
+    change = price_change(history)
+
+    if change < 0:
+        return "decreasing"
+    elif change > 0:
+        return "increasing"
+
+    return "unchanged"
+
+
+def price_range(history):
+    if not history:
+        return None
+
+    return highest_price(history) - lowest_price(history)
+
+
+def price_vs_average(history, current_price):
+    average = average_price(history)
+
+    if average is None:
+        return None
+
+    return current_price - average
+
 
 def days_until_departure(departure_date):
     departure = datetime.strptime(departure_date, "%Y-%m-%d")
@@ -69,14 +89,16 @@ def days_until_departure(departure_date):
 
     return (departure - today).days
 
+
 def summarize_history(history, departure_date):
     return {
         "average": average_price(history),
-        "lowest": lowest_price(history),
         "median": median_price(history),
+        "lowest": lowest_price(history),
         "highest": highest_price(history),
         "change": price_change(history),
         "change_percent": price_change_percent(history),
         "trend": price_trend(history),
+        "price_range": price_range(history),
         "days_until_departure": days_until_departure(departure_date),
     }
