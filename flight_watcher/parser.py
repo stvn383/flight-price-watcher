@@ -10,4 +10,4 @@ def parse_flight(flight):
         "arrival": flight["flights"][-1]["arrival_airport"]["time"],
         "total_duration": flight["total_duration"],
         "stops": len(flight.get("layovers", [])),
-    }
+    } 
